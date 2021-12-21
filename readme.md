@@ -25,9 +25,9 @@ You can combine these two commands in a single command like this :
 `financial-statement check -s <spreadSheetID> -p <payments_file> -r <refunds_file>`
 
 #### Note : 
-***Only two data format are supported when exporting data :
-- CSV file (.csv)
-- JSON file (.json)***
+***Only two data format are supported when exporting data :***
+- ***CSV file (.csv)***
+- ***JSON file (.json)***
 
 For more options on the check command, you can get info by running the help command : `financial-statement --help`
 
