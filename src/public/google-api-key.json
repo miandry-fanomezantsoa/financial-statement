@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "financial-statement-335113",
+  "private_key_id": "8d022acc85d3bc9794e6c375273621a6521d51bd",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC8wELq5xeUsGaH\neORVSxXtogHXzdWxDr1UXGebuEMd36KpXYH5GBrXjm0JvrGQW2Lbubo99jXTfxqH\nWF4Csu0q3JKfuFruJGygApnT+T+sPLYKzz6y55RfperNj3XGH/1kVEOc3bB5xNuP\nfvTkkEFRY+13hm7ESIHy1HFK9RdUOdqxIxNB9XCKZH8f7TC7ncgHZXBTmY+B5FEU\nFkYyXykrna0XnT6Fy8po+ap8DQt2eAibLw4aUVFHzVPdAsPtCK5IERLpUzJ8dGZi\n5/eMhZJ6DdZ42egjo7y01UJbN7Nlw4qcJ2o3uvse9CEp0L252J2+rNw+I4NyJ1SP\niHHnF78hAgMBAAECggEAXXH7zyrQgFLit7AQru9o8Eg0DGCBqlInRoQm4S+Uvs3w\nTFQYXDdkVpJTBi+L3fF4XFqzSyjBFi+HdTk49bIae41O49cT4XFT+9W9zXVI4h7+\naxSWMGE5Ei9ksxcSkh9VRh33iUoxq99bacvLNvr582766iE6Zl+VQiCN5DO5tH7D\n7971ogg0zyUky+ImofkSlk4KimxOsToK+BduUk+abkxESuEaQj7Mka9N3as45IUR\nSJHSroF56REpOhhTWLNVvxux3PDz2+MtnpgTg3SCVdQNxYNFQUJ9ybt34+xZz+p1\n7OUoiceAiF4F5Fj8HRSsxDXuD9ProxK0RJBRbMcKNwKBgQDpHqRC8h6hpJy+Omku\ntyOHRXDOoiPrb7VguCF28SVSjFq2zmmGhih3Ufte0h/wNfp8/rGsX7LagwcjZkep\nPTPbmSXSB/YlR0nxgRigbRiwlPQeOG+xsP2HaZZItq41sLLwg4ImFC3WKOl1N5qV\nWdTPa36opNIUYYY63mvTz/b2JwKBgQDPRtBWtXkzXjdKB/nwHR7ujRQmaey11uIP\nRJARm+yBS3l2a7/5GPYCyrZbT2bZ3kUn7hCzZrzOYnBJcSbxggcOWl9adIc00Ui6\nIsCSs3jYdKSZ9/uiTlc8OUIkYGxk7Rg5ntxB0te3OM/KEl9vc/d/nx0gB38RG+rb\n2MFUG4j1dwKBgQDl25zDldC2OYWD3DxSH6oce0/bruwT/TWuhGAa03OljVb04VoT\nlrzXyjI9MJrlU5QFI201Nbc41fF36iXGrd4wLTWpfsgpwb0bL9uEc43grz51fdhE\nMOwLVQUl9VqY/f2yQTlXKpZ3kCeBuK3njYfUbX2Z88pg5jhgW2eelnRACQKBgQCH\nnxz4bxsTekUQ4nEuI8+2ZIbXr50bSbN2K/VcIDq6Sqj5y/y7PxLQttRkoGp6iU2U\nl9dDmyhUneI8m5XQlbSKNqWHaRGChKFicRSxqE6cyo1c1P5Hr5yyogBeDt09mEiu\ngvw48X0FvF1xKV5abXV2gqSq7Vy91Bdyq7urjayqdwKBgE0e5wQGn9g5hg03Bdxv\nxeDq2/LCw460PnWLWrirTKS+EBBxlo/7ePAhQLfi6JA1mDPW85KTmkYKkRRb0Q5m\n/lUNET/iyEeL84qmJHHUyUgatsWwcJosg+PCTaQOCPLh2bJlO8caNdJPq7xWtQDx\nwEf9uBS1ZwolCJJTpoeA92zr\n-----END PRIVATE KEY-----\n",
+  "client_email": "paradox-financial-statement@financial-statement-335113.iam.gserviceaccount.com",
+  "client_id": "115938821427428328984",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/paradox-financial-statement%40financial-statement-335113.iam.gserviceaccount.com"
+}
