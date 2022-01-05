@@ -46,12 +46,12 @@ const argv = yargs(hideBin(process.argv))
                 "d": {
                     alias: "check-differences",
                     describe: "perform differences in payments and refunds transactions between calculated data by Zoho Book and Stripe",
-                    type: "string"
+                    type: "boolean"
                 },
                 "a": {
                     alias: "adjust",
                     describe: "Adjust Zoho Book after checking difference of payment's transactions",
-                    type: "string"
+                    type: "boolean"
                 }
             })
         },
@@ -331,15 +331,15 @@ async function checkDifference() {
         console.table(payment_adjustment.TOO_MUCH_DIFFTRANS)
     }
     console.log("---------------- Somme des différences de toutes les transactions de paiements -----------------------")
-    console.log("TOTAL : " + payment_adjustment.TOTAL_DIFFTRANS)
+    console.log("TOTAL : " + payment_adjustment.TOTAL_DIFFTRANS.toFixed(2))
 
-    await refund_adjustment.checkDiff(stripe_payments.PAYMENTS_DATA)
+    await refund_adjustment.checkDiff(stripe_refunds.REFUNDS_DATA)
     if(refund_adjustment.TOO_MUCH_DIFFTRANS.length > 0) {
         console.log("----------- Les paiements dont la différence de transaction entre la valeur dans ZohoBook et Stripe est supérieure à 0.04 ------------------")
         console.table(refund_adjustment.TOO_MUCH_DIFFTRANS)
     }
-    console.log("---------------- Somme des différences de toutes les transactions de paiements -----------------------")
-    console.log("TOTAL : " + refund_adjustment.TOTAL_DIFFTRANS)
+    console.log("---------------- Somme des différences de toutes les transactions de remboursements -----------------------")
+    console.log("TOTAL : " + refund_adjustment.TOTAL_DIFFTRANS.toFixed(2))
 }
 
 
