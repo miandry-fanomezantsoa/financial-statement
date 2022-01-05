@@ -2,6 +2,7 @@
 
 const fs = require('fs')
 const path = require('path')
+const axios = require('axios')
 
 const stripe_payments = require('../lib/src/payments-check/stripe')
 const checkout_payments = require('../lib/src/payments-check/checkout')
@@ -270,21 +271,35 @@ async function check(argv) {
                 payment_adjustment.END_DATE.getMonth() === 11 ? 11 : payment_adjustment.END_DATE.getMonth() + 1,
                 payment_adjustment.END_DATE.getMonth() === 11 ? 31 : 0
             )
+
+            console.log(payment_adjustment.TOTAL_DIFFTRANS)
             if(payment_adjustment.TOTAL_DIFFTRANS > 0) {
-                const banktransaction = {
+                const bankTransaction = {
                     "amount": payment_adjustment.TOTAL_DIFFTRANS.toFixed(2),
                     "date": "" + last_day_of_month.getFullYear() + "-" + formatInteger(last_day_of_month.getMonth() + 1, 2) + "-" + formatInteger(last_day_of_month.getDate(), 2),  
                     "description":"",
                     "from_account_id":"2332079000000000409",
-                    "reference_number": "STRIPE-PAYMENTS-ADJUSTEMENT-" + last_day_of_month.getFullYear() + formatInteger(last_day_of_month.getMonth() + 1, 2)
+                    "reference_number": "STRIPE-PAYMENTS-ADJUSTEMENT-" + last_day_of_month.getFullYear() + formatInteger(last_day_of_month.getMonth() + 1, 2),
                     "payment_mode":"Bank Remittance",
                     "to_account_id":"2332079000000090017",
                     "transaction_type":"expense_refund",
                     "is_inclusive_tax":false,
                     "tax_treatment":"out_of_scope"
                 }
+
+                // Sending payload
+                const url = "https://books.zoho.com/api/v3/banktransactions?organization_id=721482724"
+                // sendPayload(
+                //     bankTransaction, 
+                //     url,
+                //     {
+                //         success: "*********** Sending payload to " + url + " succeded ! ************",
+                //         error: "*********** Sending payload to " + url + " has failed ! ************"
+                //     }
+                // )
+                console.log(bankTransaction)
             } else if(payment_adjustment.TOTAL_DIFFTRANS < 0) {
-                const banktransaction = {
+                const bankTransaction = {
                     "account_id": 2332079000000000409,
                     "paid_through_account_id":"2332079000000090017",
                     "date": "" + last_day_of_month.getFullYear() + "-" + formatInteger(last_day_of_month.getMonth() + 1, 2) + "-" + formatInteger(last_day_of_month.getDate(), 2),  
@@ -292,6 +307,18 @@ async function check(argv) {
                     "tax_treatment":"out_of_scope",
                     "reference_number":"STRIPE-PAYMENTS-ADJUSTEMENT-" + last_day_of_month.getFullYear() + formatInteger(last_day_of_month.getMonth() + 1, 2)
                 }
+
+                // Sending payload
+                const url = "https://books.zoho.com/api/v3/expenses?organization_id=721482724"
+                // sendPayload(
+                //     bankTransaction, 
+                //     url,
+                //     {
+                //         success: "*********** Sending payload to " + url + " succeded ! ************",
+                //         error: "*********** Sending payload to " + url + " has failed ! ************"
+                //     }
+                // )
+                console.log(bankTransaction)
             }
         }
     }
@@ -322,5 +349,16 @@ function formatInteger(number, length) {
         r = "0" + r;
     }
     return r;
+}
+
+function sendPayload(payload, url, messages) {
+    axios.post(url, payload)
+    .then(res => {
+        if(parseInt(parseInt(res.status)/100) === 2) {
+            console.log(messages.success)
+        } else if(parseInt(parseInt(res.status)/100) === 4 || parseInt(parseInt(res.status)/100) === 5) {
+            console.error(messages.error)
+        }
+    })
 }
 

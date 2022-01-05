@@ -14,14 +14,20 @@ To install the application, so you can run it form anywhere in the directory of 
 
 ## Usage
 To perform a check in a google sheet file, you have to run this command :
+
 `financial-statement check -s <spreadSheetID>`
 
 If the check is not OK, the application will print the founded problems in the console.
 Otherwise, you can export Stripe payments data after the check is conclusive by running this command :
+
 `financial-statement check -s <spreadSheetID> -p <file>`
+
 Also you can also export Stripe refunds data after the check is conclusive by running this command :
+
 `financial-statement check -s <spreadSheetID> -r <file>`
+
 You can combine these two commands in a single command like this :
+
 `financial-statement check -s <spreadSheetID> -p <payments_file> -r <refunds_file>`
 
 #### Note : 
