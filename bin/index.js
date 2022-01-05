@@ -306,10 +306,6 @@ async function checkDifference() {
     console.log("---------------- Somme des différences de toutes les transactions de paiements -----------------------")
     console.log("TOTAL : " + payment_adjustment.TOTAL_DIFFTRANS)
 
-    if(payment_adjustment.START_DATE.getMonth() !== payment_adjustment.END_DATE.getMonth()) {
-        throw new Error("The data analyzed exceeds one moth. Start date on " + payment_adjustment.START_DATE.toDateString() + " and end date on" + payment_adjustment.END_DATE.toDateString())
-    }
-
     await refund_adjustment.checkDiff(stripe_payments.PAYMENTS_DATA)
     if(refund_adjustment.TOO_MUCH_DIFFTRANS.length > 0) {
         console.log("----------- Les paiements dont la différence de transaction entre la valeur dans ZohoBook et Stripe est supérieure à 0.04 ------------------")
