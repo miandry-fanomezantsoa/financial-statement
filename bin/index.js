@@ -7,6 +7,8 @@ const stripe_payments = require('../lib/src/payments-check/stripe')
 const checkout_payments = require('../lib/src/payments-check/checkout')
 const stripe_refunds = require('../lib/src/refunds-check/stripe')
 const checkout_refunds = require('../lib/src/refunds-check/checkout')
+const payment_adjustment = require('../lib/src/adjustment/payments')
+const refund_adjustment = require('../lib/src/adjustment/refunds')
 
 const csv_writer = require('csv-writer')
 const yargs = require('yargs/yargs')
@@ -38,6 +40,16 @@ const argv = yargs(hideBin(process.argv))
                 "r": {
                     alias: "refund-output",
                     describe: "The file to export the stripe refunds data",
+                    type: "string"
+                }, 
+                "d": {
+                    alias: "check-differences",
+                    describe: "perform differences in payments and refunds transactions between calculated data by Zoho Book and Stripe",
+                    type: "string"
+                },
+                "a": {
+                    alias: "adjust",
+                    describe: "Adjust Zoho Book after checking difference of payment's transactions",
                     type: "string"
                 }
             })
@@ -188,6 +200,7 @@ async function check(argv) {
                         {id: 'exch', title: 'Exchange Rate'},
                         {id: 'bank', title: 'Bank Charges'},
                         {id: 'eur', title: 'Amount'},
+                        {id: 'aed', title: 'Amount in AED'},
                     ]
                 });
                 const records = stripe_payments.PAYMENTS_DATA
@@ -241,6 +254,77 @@ async function check(argv) {
                 throw new Error("Not supported data format. CSV and JSON are the only supported data format.")
             }
         }
+
+        // Checking transaction's differences if the option is given
+        if(argv.d) {
+            await checkDifference()
+        }
+
+        if(argv.a) {
+            if(!argv.d) {
+                await checkDifference()
+            }
+            
+            const last_day_of_month = new Date(
+                payment_adjustment.END_DATE.getFullYear(),
+                payment_adjustment.END_DATE.getMonth() === 11 ? 11 : payment_adjustment.END_DATE.getMonth() + 1,
+                payment_adjustment.END_DATE.getMonth() === 11 ? 31 : 0
+            )
+            if(payment_adjustment.TOTAL_DIFFTRANS > 0) {
+                const banktransaction = {
+                    "amount": payment_adjustment.TOTAL_DIFFTRANS.toFixed(2),
+                    "date": "" + last_day_of_month.getFullYear() + "-" + formatInteger(last_day_of_month.getMonth() + 1, 2) + "-" + formatInteger(last_day_of_month.getDate(), 2),  
+                    "description":"",
+                    "from_account_id":"2332079000000000409",
+                    "reference_number": "STRIPE-PAYMENTS-ADJUSTEMENT-" + last_day_of_month.getFullYear() + formatInteger(last_day_of_month.getMonth() + 1, 2)
+                    "payment_mode":"Bank Remittance",
+                    "to_account_id":"2332079000000090017",
+                    "transaction_type":"expense_refund",
+                    "is_inclusive_tax":false,
+                    "tax_treatment":"out_of_scope"
+                }
+            } else if(payment_adjustment.TOTAL_DIFFTRANS < 0) {
+                const banktransaction = {
+                    "account_id": 2332079000000000409,
+                    "paid_through_account_id":"2332079000000090017",
+                    "date": "" + last_day_of_month.getFullYear() + "-" + formatInteger(last_day_of_month.getMonth() + 1, 2) + "-" + formatInteger(last_day_of_month.getDate(), 2),  
+                    "amount": parseFloat(payment_adjustment.TOTAL_DIFFTRANS.toFixed(2)), 
+                    "tax_treatment":"out_of_scope",
+                    "reference_number":"STRIPE-PAYMENTS-ADJUSTEMENT-" + last_day_of_month.getFullYear() + formatInteger(last_day_of_month.getMonth() + 1, 2)
+                }
+            }
+        }
     }
+}
+
+async function checkDifference() {
+    await payment_adjustment.checkDiff(stripe_payments.PAYMENTS_DATA)
+    if(payment_adjustment.TOO_MUCH_DIFFTRANS.length > 0) {
+        console.log("----------- Les paiements dont la différence de transaction entre la valeur dans ZohoBook et Stripe est supérieure à 0.04 ------------------")
+        console.table(payment_adjustment.TOO_MUCH_DIFFTRANS)
+    }
+    console.log("---------------- Somme des différences de toutes les transactions de paiements -----------------------")
+    console.log("TOTAL : " + payment_adjustment.TOTAL_DIFFTRANS)
+
+    if(payment_adjustment.START_DATE.getMonth() !== payment_adjustment.END_DATE.getMonth()) {
+        throw new Error("The data analyzed exceeds one moth. Start date on " + payment_adjustment.START_DATE.toDateString() + " and end date on" + payment_adjustment.END_DATE.toDateString())
+    }
+
+    await refund_adjustment.checkDiff(stripe_payments.PAYMENTS_DATA)
+    if(refund_adjustment.TOO_MUCH_DIFFTRANS.length > 0) {
+        console.log("----------- Les paiements dont la différence de transaction entre la valeur dans ZohoBook et Stripe est supérieure à 0.04 ------------------")
+        console.table(refund_adjustment.TOO_MUCH_DIFFTRANS)
+    }
+    console.log("---------------- Somme des différences de toutes les transactions de paiements -----------------------")
+    console.log("TOTAL : " + refund_adjustment.TOTAL_DIFFTRANS)
+}
+
+
+function formatInteger(number, length) {
+    let r = "" + number
+    while (r.length < length) {
+        r = "0" + r;
+    }
+    return r;
 }
 
