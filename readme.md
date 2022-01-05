@@ -41,6 +41,11 @@ You can combine these two commands in a single command like this :
 
 `financial-statement check -s <spreadSheetID> -p <payments_file> -r <refunds_file>`
 
+#### Note : 
+*Only two data format are supported when exporting data :*
+- *CSV file (.csv)*
+- *JSON file (.json)*
+
 #### Perform adjustment
 To make adjustment of calculation in Zoho Book if there is difference in transaction compared to Stripe transactions, checking these deviations for each payments and refunds is first done, then if sum of difference is not zero, adjustment on ZohoBook is performed by sending ZohoBook API call.
 
@@ -53,11 +58,6 @@ To make the adjustment, you can add the `a` parameter to the command above like 
 `financial-statement check -s <spreadSheetID> -d`
 
 When adding the `a` parameter, you can omit the `d` parameter because **anyway, checking deviations is always done before making adjustment**.
-
-#### Note : 
-***Only two data format are supported when exporting data :***
-- ***CSV file (.csv)***
-- ***JSON file (.json)***
 
 For more options on the check command, you can get info by running the help command : `financial-statement --help`
 
