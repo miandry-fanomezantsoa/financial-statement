@@ -272,7 +272,6 @@ async function check(argv) {
                 payment_adjustment.END_DATE.getMonth() === 11 ? 31 : 0
             )
 
-            console.log(payment_adjustment.TOTAL_DIFFTRANS)
             if(payment_adjustment.TOTAL_DIFFTRANS > 0) {
                 const bankTransaction = {
                     "amount": payment_adjustment.TOTAL_DIFFTRANS.toFixed(2),
